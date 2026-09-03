@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RETRO_CLOUD_STORAGE // SECURE VAULT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="retro-header">
+            <h1>RETRO_CLOUD_STORAGE.SYS v1.04</h1>
+            <p class="status-line">SYSTEM STATUS: <span id="auth-status">DISCONNECTED</span></p>
+        </header>
+
+        <div id="auth-view" class="panel">
+            <fieldset>
+                <legend>[ SECURE LOGIN / REGISTER ]</legend>
+                <form id="auth-form">
+                    <div class="form-group">
+                        <label for="email">USER_EMAIL:</label>
+                        <input type="email" id="email" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">PASSWORD:</label>
+                        <input type="password" id="password" required autocomplete="current-password">
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" id="login-btn">LOGIN</button>
+                        <button type="button" id="register-btn">REGISTER</button>
+                    </div>
+                </form>
+                <div id="auth-error" class="error-text"></div>
+            </fieldset>
+        </div>
+
+        <div id="dashboard-view" class="panel hidden">
+            <div class="dashboard-header">
+                <span id="user-display">USER: UNKNOWN</span>
+                <button id="logout-btn">LOGOUT</button>
+            </div>
+
+            <fieldset class="upload-section">
+                <legend>[ UPLOAD FILE TO VAULT ]</legend>
+                <form id="upload-form">
+                    <div class="form-group">
+                        <label for="file-input">SELECT_FILE:</label>
+                        <input type="file" id="file-input" required>
+                    </div>
+                    <button type="submit" id="upload-btn">TRANSMIT FILE</button>
+                </form>
+                <div id="upload-status" class="status-text"></div>
+            </fieldset>
+
+            <fieldset class="file-list-section">
+                <legend>[ STORED FILES DIRECTORY ]</legend>
+                <div class="table-container">
+                    <table class="retro-table">
+                        <thead>
+                            <tr>
+                                <th>FILE_NAME</th>
+                                <th>SIZE (BYTES)</th>
+                                <th>TIMESTAMP</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="file-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+
+        <footer class="retro-footer">
+            <p>SECURE ARCHITECTURE ACTIVE. ALL RIGHTS RESERVED. 1998.</p>
+        </footer>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <script src="app.js"></script>
+</body>
+</html>
