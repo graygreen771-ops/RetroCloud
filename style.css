@@ -1,0 +1,207 @@
+/* 1990s RETRO SYSTEM DESIGN SYSTEM */
+:root {
+    --bg-color: #008080;
+    --window-bg: #c0c0c0;
+    --text-color: #000000;
+    --window-border-light: #ffffff;
+    --window-border-dark: #808080;
+    --window-border-deepdark: #000000;
+    --highlight-blue: #000080;
+    --highlight-text: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: "Courier New", Courier, monospace, "MS Sans Serif", Arial;
+    color: var(--text-color);
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--window-bg);
+    border: 2px solid;
+    border-color: var(--window-border-light) var(--window-border-deepdark) var(--window-border-deepdark) var(--window-border-light);
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+}
+
+/* HEADER */
+.retro-header {
+    background-color: var(--highlight-blue);
+    color: var(--highlight-text);
+    padding: 6px 10px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.retro-header h1 {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.status-line {
+    font-size: 11px;
+}
+
+/* PANELS & FIELDSETS */
+.panel {
+    margin-bottom: 15px;
+}
+
+fieldset {
+    border: 2px solid;
+    border-color: var(--window-border-dark) var(--window-border-light) var(--window-border-light) var(--window-border-dark);
+    padding: 12px;
+    margin-bottom: 10px;
+    background-color: var(--window-bg);
+}
+
+legend {
+    font-weight: bold;
+    background-color: var(--window-bg);
+    padding: 0 5px;
+}
+
+/* FORMS */
+.form-group {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 3px;
+    font-weight: bold;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="file"] {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: var(--window-border-deepdark) var(--window-border-light) var(--window-border-light) var(--window-border-deepdark);
+    padding: 4px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text-color);
+}
+
+input[type="file"] {
+    padding: 2px;
+}
+
+/* BUTTONS */
+button, input[type="submit"] {
+    background-color: var(--window-bg);
+    border: 2px solid;
+    border-color: var(--window-border-light) var(--window-border-deepdark) var(--window-border-deepdark) var(--window-border-light);
+    padding: 4px 12px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+button:active, input[type="submit"]:active {
+    border-color: var(--window-border-deepdark) var(--window-border-light) var(--window-border-light) var(--window-border-deepdark);
+    padding: 5px 11px 3px 13px;
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* DASHBOARD CONTROLS */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #a0a0a0;
+    padding: 6px;
+    border: 1px solid var(--window-border-dark);
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+/* TABLES */
+.table-container {
+    background-color: #ffffff;
+    border: 2px solid;
+    border-color: var(--window-border-deepdark) var(--window-border-light) var(--window-border-light) var(--window-border-deepdark);
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.retro-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.retro-table th {
+    background-color: var(--window-bg);
+    border-bottom: 2px solid var(--window-border-deepdark);
+    border-right: 1px solid var(--window-border-dark);
+    padding: 6px;
+    font-size: 12px;
+    position: sticky;
+    top: 0;
+}
+
+.retro-table td {
+    padding: 5px 6px;
+    border-bottom: 1px solid #d0d0d0;
+    border-right: 1px solid #e0e0e0;
+    font-size: 12px;
+}
+
+.retro-table tr:hover {
+    background-color: #000080;
+    color: #ffffff;
+}
+
+.retro-table tr:hover button {
+    background-color: #c0c0c0;
+    color: #000000;
+}
+
+/* UTILITY CLASSES */
+.hidden {
+    display: none !important;
+}
+
+.error-text {
+    color: #800000;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.status-text {
+    color: #000080;
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+/* FOOTER */
+.retro-footer {
+    text-align: center;
+    font-size: 11px;
+    border-top: 1px solid var(--window-border-dark);
+    padding-top: 8px;
+    color: #404040;
+}
