@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Match documents in the 'files' collection
+    match /files/{fileId} {
+      
+      // Allow read access strictly if user is authenticated and owns the file document
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      
+      // Allow create access strictly if user is authenticated and stamps their own user ID
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      
+      // Allow update or delete access strictly if user is authenticated and owns the target resource
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+  }
+}
