@@ -8,11 +8,21 @@
 </head>
 <body>
     <div class="container">
+        <!-- HEADER WITH WINDOW CONTROLS -->
         <header class="retro-header">
-            <h1>RETRO_CLOUD_STORAGE.SYS v1.04</h1>
-            <p class="status-line">SYSTEM STATUS: <span id="auth-status">DISCONNECTED</span></p>
+            <div class="header-title">RETRO_CLOUD_STORAGE.SYS v1.04</div>
+            <div class="window-controls">
+                <button class="win-btn">_</button>
+                <button class="win-btn">^</button>
+                <button class="win-btn">X</button>
+            </div>
         </header>
+        <div class="sub-header">
+            <span>SYSTEM STATUS: <span id="auth-status">DISCONNECTED</span></span>
+            <span id="storage-quota">VAULT: 0 KB / 500 KB</span>
+        </div>
 
+        <!-- AUTHENTICATION VIEW -->
         <div id="auth-view" class="panel">
             <fieldset>
                 <legend>[ SECURE LOGIN / REGISTER ]</legend>
@@ -34,17 +44,19 @@
             </fieldset>
         </div>
 
+        <!-- DASHBOARD VIEW -->
         <div id="dashboard-view" class="panel hidden">
             <div class="dashboard-header">
                 <span id="user-display">USER: UNKNOWN</span>
                 <button id="logout-btn">LOGOUT</button>
             </div>
 
+            <!-- UPLOAD PANEL -->
             <fieldset class="upload-section">
                 <legend>[ UPLOAD FILE TO VAULT ]</legend>
                 <form id="upload-form">
                     <div class="form-group">
-                        <label for="file-input">SELECT_FILE:</label>
+                        <label for="file-input">SELECT_FILE (MAX 500KB):</label>
                         <input type="file" id="file-input" required>
                     </div>
                     <button type="submit" id="upload-btn">TRANSMIT FILE</button>
@@ -52,8 +64,13 @@
                 <div id="upload-status" class="status-text"></div>
             </fieldset>
 
+            <!-- FILE LIST PANEL -->
             <fieldset class="file-list-section">
                 <legend>[ STORED FILES DIRECTORY ]</legend>
+                <div class="form-group search-box">
+                    <label for="search-input">FILTER_FILES:</label>
+                    <input type="text" id="search-input" placeholder="SEARCH FILENAME...">
+                </div>
                 <div class="table-container">
                     <table class="retro-table">
                         <thead>
@@ -65,12 +82,14 @@
                             </tr>
                         </thead>
                         <tbody id="file-table-body">
-                            </tbody>
+                            <!-- Dynamic rows injected via app.js -->
+                        </tbody>
                     </table>
                 </div>
             </fieldset>
         </div>
 
+        <!-- FOOTER -->
         <footer class="retro-footer">
             <p>SECURE ARCHITECTURE ACTIVE. ALL RIGHTS RESERVED.</p>
         </footer>
@@ -79,7 +98,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    
     <script src="app.js"></script>
 </body>
 </html>
