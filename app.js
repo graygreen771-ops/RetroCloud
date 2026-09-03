@@ -1,11 +1,11 @@
-// FIREBASE CONFIGURATION (Replace parameters with your project keys)
+// FIREBASE CONFIGURATION
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyAMnVzitl6x0c1Y45kN-t6GVWlSow-AOBo",
+    authDomain: "retrocloud-a81ca.firebaseapp.com",
+    projectId: "retrocloud-a81ca",
+    storageBucket: "retrocloud-a81ca.firebasestorage.app",
+    messagingSenderId: "402145528540",
+    appId: "1:402145528540:web:012cab3343f8ced18d4219"
 };
 
 // Initialize Firebase Compat
