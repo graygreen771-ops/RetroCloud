@@ -10,7 +10,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-const storage = firebase.storage();
 
 const authView = document.getElementById('auth-view');
 const dashboardView = document.getElementById('dashboard-view');
@@ -54,7 +53,7 @@ auth.onAuthStateChanged((user) => {
         dashboardView.classList.add('hidden');
         authView.classList.remove('hidden');
         fileTableBody.innerHTML = "";
-        storageQuota.innerText = "VAULT: 0 KB / 10 MB";
+        storageQuota.innerText = "VAULT: 0 KB / 800 KB";
     }
 });
 
@@ -104,44 +103,44 @@ uploadForm.addEventListener('submit', (e) => {
     const file = fileInput.files[0];
     if (!file) return;
 
-    // 10MB limit check
-    if (file.size > 10485760) {
-        uploadStatus.innerText = "ERROR: FILE EXCEEDS 10MB LIMIT.";
+    // Safe limit for Firestore document size (800KB)
+    if (file.size > 819200) {
+        uploadStatus.innerText = "ERROR: FILE EXCEEDS 800KB LIMIT.";
         return;
     }
 
-    uploadStatus.innerText = "UPLOADING TO VAULT...";
+    uploadStatus.innerText = "PROCESSING FILE ENCODING...";
 
-    const filePath = `users/${user.uid}/${Date.now()}_${file.name}`;
-    const storageRef = storage.ref().child(filePath);
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const base64Data = event.target.result;
+        const sanitizedFileName = sanitizeString(file.name);
 
-    storageRef.put(file)
-        .then((snapshot) => {
-            return snapshot.ref.getDownloadURL();
-        })
-        .then((downloadURL) => {
-            const sanitizedFileName = sanitizeString(file.name);
+        const fileRecord = {
+            userId: user.uid,
+            name: sanitizedFileName,
+            size: file.size,
+            type: file.type,
+            data: base64Data,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
 
-            const fileRecord = {
-                userId: user.uid,
-                name: sanitizedFileName,
-                size: file.size,
-                type: file.type,
-                storagePath: filePath,
-                downloadURL: downloadURL,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
+        db.collection('files').add(fileRecord)
+            .then(() => {
+                uploadStatus.innerText = "SUCCESS: FILE TRANSMITTED.";
+                uploadForm.reset();
+                setTimeout(() => { uploadStatus.innerText = ""; }, 3000);
+            })
+            .catch((error) => {
+                uploadStatus.innerText = "ERROR: TRANSMISSION FAILED - " + sanitizeString(error.message);
+            });
+    };
 
-            return db.collection('files').add(fileRecord);
-        })
-        .then(() => {
-            uploadStatus.innerText = "SUCCESS: FILE STORED.";
-            uploadForm.reset();
-            setTimeout(() => { uploadStatus.innerText = ""; }, 3000);
-        })
-        .catch((error) => {
-            uploadStatus.innerText = "ERROR: UPLOAD FAILED - " + sanitizeString(error.message);
-        });
+    reader.onerror = () => {
+        uploadStatus.innerText = "ERROR: FAILED TO READ LOCAL FILE.";
+    };
+
+    reader.readAsDataURL(file);
 });
 
 function loadUserFiles(uid) {
@@ -160,7 +159,7 @@ function loadUserFiles(uid) {
             });
 
             const totalKb = (totalBytes / 1024).toFixed(1);
-            storageQuota.innerText = `VAULT: ${totalKb} KB / 10240 KB`;
+            storageQuota.innerText = `VAULT: ${totalKb} KB / 800 KB`;
 
             renderTable(cachedFiles);
         }, (error) => {
@@ -192,7 +191,7 @@ function renderTable(files) {
             <td>${fileData.size}</td>
             <td>${dateStr}</td>
             <td>
-                <button class="action-btn download-btn" data-url="${fileData.downloadURL}" data-name="${sanitizeString(fileData.name)}">GET</button>
+                <button class="action-btn download-btn" data-name="${sanitizeString(fileData.name)}" data-payload="${fileData.data}">GET</button>
                 <button class="action-btn delete-btn" data-id="${fileData.id}">DEL</button>
             </td>
         `;
@@ -211,11 +210,10 @@ searchInput.addEventListener('input', (e) => {
 function bindTableActions() {
     document.querySelectorAll('.download-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const url = e.target.getAttribute('data-url');
+            const payload = e.target.getAttribute('data-payload');
             const name = e.target.getAttribute('data-name');
             const downloadLink = document.createElement('a');
-            downloadLink.href = url;
-            downloadLink.target = "_blank";
+            downloadLink.href = payload;
             downloadLink.download = name;
             document.body.appendChild(downloadLink);
             downloadLink.click();
@@ -227,16 +225,7 @@ function bindTableActions() {
         btn.addEventListener('click', (e) => {
             const fileId = e.target.getAttribute('data-id');
             if (confirm("CONFIRM DELETION OF RECORD?")) {
-                db.collection('files').doc(fileId).get()
-                    .then((doc) => {
-                        if (doc.exists) {
-                            const storagePath = doc.data().storagePath;
-                            if (storagePath) {
-                                storage.ref().child(storagePath).delete().catch(err => console.log(err));
-                            }
-                        }
-                        return db.collection('files').doc(fileId).delete();
-                    })
+                db.collection('files').doc(fileId).delete()
                     .catch((error) => {
                         alert("DELETE FAILED: " + error.message);
                     });
